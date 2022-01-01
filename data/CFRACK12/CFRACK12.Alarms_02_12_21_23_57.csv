@@ -1,0 +1,101 @@
+Row,Date,Time,Alarm
+0,06/19/20,12:29:24,High pH CO
+1,06/19/20,13:31:14,High pH CO
+2,08/12/20,15:45:33,High Water Level
+3,02/06/21,08:24:41,High pH CO
+4,03/07/21,11:35:18,System Manually Stopped
+5,04/23/21,08:48:58,High Water Level CO
+6,05/11/21,10:44:31,High Water Level
+7,05/17/21,10:15:42,High Water Level CO
+8,05/19/21,10:07:05,System Manually Stopped
+9,07/21/21,11:01:41,High Water Level
+10,10/16/21,09:19:47,High Water Level
+11,12/27/16,12:28:49,Inspect pH Dosing Pump
+12,12/30/16,11:22:05,Low Conductivity
+13,01/03/17,09:48:55,System Manually Stopped
+14,01/08/17,13:37:25,System Manually Stopped
+15,01/08/17,13:39:22,System Manually Stopped
+16,01/14/17,13:21:29,System Manually Stopped
+17,01/21/17,15:58:50,Test email 
+18,02/03/17,14:11:59,Inspect pH Dosing Pump
+19,02/03/17,14:32:16,High Water Level CO
+20,02/04/17,08:15:28,System Manually Stopped
+21,02/09/17,20:16:00,Inspect UV Lamps
+22,02/11/17,15:45:55,System Manually Stopped
+23,02/16/17,00:48:00,Inspect UV
+24,02/17/17,13:58:59,High Water Level CO
+25,02/24/17,13:05:16,System Manually Stopped
+26,02/24/17,14:35:32,System Manually Stopped
+27,03/02/17,13:43:30,High pH
+28,03/02/17,14:45:02,High pH
+29,03/11/17,12:37:36,System Manually Stopped
+30,03/17/17,14:13:50,High Water Level CO
+31,03/22/17,15:49:07,High Water Level CO
+32,03/24/17,14:45:55,High Water Level CO
+33,03/24/17,14:59:36,System Manually Stopped
+34,03/26/17,10:51:39,Inspect pH Dosing Pump
+35,03/28/17,15:22:43,High Water Level CO
+36,04/01/17,12:46:51,High Water Level CO
+37,04/08/17,10:35:07,High Water Level CO
+38,04/17/17,14:54:36,System Manually Stopped
+39,04/17/17,14:57:52,System Manually Stopped
+40,04/26/17,10:10:14,Low Temperature
+41,04/28/17,14:36:38,System Manually Stopped
+42,04/29/17,14:35:46,High Water Level CO
+43,05/06/17,09:46:53,Low Temperature
+44,05/06/17,10:02:52,System Manually Stopped
+45,05/10/17,13:58:58,Low Temperature
+46,05/17/17,09:49:47,Low Temperature
+47,08/11/17,08:32:11,High pH
+48,08/11/17,09:33:40,High pH
+49,08/11/17,10:34:46,High pH
+50,08/11/17,11:37:19,High pH
+51,08/31/17,13:29:37,System Manually Stopped
+52,09/16/17,13:44:13,System Manually Stopped
+53,12/07/17,21:42:58,High Conductivity
+54,12/08/17,10:39:24,High pH
+55,12/08/17,11:47:00,High pH
+56,12/08/17,12:48:46,High pH
+57,12/08/17,13:48:57,Alarm Needs Acknowledgmen
+58,12/08/17,14:51:24,High pH
+59,12/08/17,17:06:23,High pH
+60,12/28/17,13:59:07,Low Conductivity
+61,01/12/18,12:27:59,Low Conductivity
+62,01/25/18,22:19:06,Low Flow
+63,03/04/18,08:29:12,System Manually Stopped
+64,03/17/18,14:11:23,High Water Level CO
+65,03/20/18,11:14:26,Low Conductivity
+66,04/10/18,08:58:10,Test email 
+67,05/11/18,13:27:43,System Manually Stopped
+68,05/22/18,13:51:30,Low Conductivity
+69,05/26/18,09:30:59,High Water Level CO
+70,05/26/18,14:01:18,High Water Level CO
+71,05/26/18,14:14:56,High Water Level CO
+72,05/26/18,14:19:53,High Water Level CO
+73,05/26/18,14:32:24,High Water Level CO
+74,06/26/18,10:13:17,System Manually Stopped
+75,07/13/18,18:25:28,Low Water Level CO
+76,09/14/18,09:15:29,High Water Level CO
+77,09/18/18,13:05:28,Low Temperature
+78,09/27/18,14:17:03,Low pH
+79,10/09/18,10:22:26,System Manually Stopped
+80,10/25/18,15:06:56,System Manually Stopped
+81,11/16/18,13:42:48,System Manually Stopped
+82,11/28/18,13:07:49,High pH CO
+83,01/15/19,12:12:03,Low pH
+84,01/15/19,13:47:04,Low pH
+85,01/15/19,14:47:15,Alarm Needs Acknowledgmen
+86,01/22/19,15:06:45,Low Conductivity
+87,03/30/19,12:35:59,High Water Level CO
+88,04/26/19,12:48:06,High pH CO
+89,05/15/19,12:05:53,Low pH
+90,06/15/19,13:23:46,Low pH
+91,08/12/19,08:01:28,System Manually Stopped
+92,08/15/19,10:27:05,Low pH
+93,08/31/19,07:45:26,System Manually Stopped
+94,09/23/19,15:03:01,High Water Level CO
+95,11/09/19,12:30:18,High Water Level CO
+96,11/09/19,12:34:13,High Water Level CO
+97,12/13/19,11:47:42,Low Water Level
+98,02/06/20,14:39:29,High Conductivity CO
+99,02/21/20,13:19:27,High Water Level
