@@ -43,7 +43,7 @@ def compute_data_choice_1(df_water_quality):
     temperature_data=df_water_quality.groupby(['Rack_Number','Time'])['Temperature'].sum().reset_index()
    
     return conductivity_data, ph_data, flow_data, water_level_data, temperature_data
-
+    
 
 """Compute graph data for creating equipment state analysis
 
@@ -58,15 +58,15 @@ Returns:
 
 def compute_data_choice_2(df_equip_state):
     # pH pump
-    pH_pump_data=df_equip_state.groupby(['Rack_Number','Time']).filter(['Device_E']=='pH Pump')['State_E'].f.sum().reset_index()
+    pH_pump_data=df_equip_state.groupby(['Rack_Number','Date_E']).filter(['Device_E']=='pH Pump')['State_E'].sum().reset_index()
     # Conductivity pump
-    Conductivity_pump_data=df_equip_state.groupby(['Rack_Number','Time']).filter(['Device_E']=='Conductivity Pump')['State_E'].f.sum().reset_index()
+    Conductivity_pump_data=df_equip_state.groupby(['Rack_Number','Date_E']).filter(['Device_E']=='Conductivity Pump')['State_E'].sum().reset_index()
     # Heat Exchange Compression (Turning Heat Pump on/off)
-    Heat_Compressor_data=df_equip_state.groupby(['Rack_Number','Time']).filter(['Device_E']=='Heat Ex Comp')['State_E'].f.sum().reset_index()
+    Heat_Compressor_data=df_equip_state.groupby(['Rack_Number','Date_E']).filter(['Device_E']=='Heat Ex Comp')['State_E'].sum().reset_index()
     # Cooling (switching heat pump to cooling)
-    Water_exchange_data=df_equip_state.groupby(['Rack_Number','Time']).filter(['Device_E']=='Effulent Coil')['State_E'].f.sum().reset_index()
+    Water_exchange_data=df_equip_state.groupby(['Rack_Number','Date_E']).filter(['Device_E']=='Effulent Coil')['State_E'].sum().reset_index()
     # Heating (switching heat pump to heating)
-    Cooling_data=df_equip_state.groupby(['Rack_Number','Time']).filter(['Device_E']=='Cooling')['State_E'].f.sum().reset_index()
+    Cooling_data=df_equip_state.groupby(['Rack_Number','Date_E']).filter(['Device_E']=='Cooling')['State_E'].sum().reset_index()
 #This is the full layout of the app
 app.layout = html.Div( style={'backgroundColor': '#111111','color':'white'}, children=[
                  #Header Div
@@ -199,10 +199,10 @@ def get_graph(chart,number, timeline, date, YoY, children1,children2,c3,c4,c5):
                 dcc.Graph(figure=temperature_fig)
              ]
     else:
-        ph_pump_data, Conductivity_pump_data, Heat_Compressor_data,Water_exchange_data, Cooling_data=compute_data_choice_2(df_equip_state)
+        pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_choice_2(df_equip_state)
         
         #Create Graph
-        pH_pump_fig=px.bar(ph_pump_data, x='Date', y='State', color='Rack_Number',title= "pH Pump State")
+        pH_pump_fig=px.bar(pH_pump_data, x='Date', y='State', color='Rack_Number',title= "pH Pump State")
        
         conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Date', y='State', color='Rack_Number',title= "Conductivity Pump State")
 
@@ -219,4 +219,4 @@ def get_graph(chart,number, timeline, date, YoY, children1,children2,c3,c4,c5):
              ]
 
 if __name__ =='__main__':
-    app.run_server(debug=False,port=8008)
+    app.run_server(debug=False,port=8006)
