@@ -50,18 +50,46 @@ Returns:
 
 def compute_data_daily_WQ(df_WQ):
     # Conductivity
-    conductivity_data=df_WQ.groupby(['Rack_Number','Time'])['Conductivity'].sum().reset_index()
+    conductivity_data=df_WQ.groupby(['Rack_Number','Time'])['Conductivity'].mean().reset_index()
     # pH
-    ph_data=df_WQ.groupby(['Rack_Number','Time'])['pH'].sum().reset_index()
+    ph_data=df_WQ.groupby(['Rack_Number','Time'])['pH'].mean().reset_index()
     # Flow
-    flow_data=df_WQ.groupby(['Rack_Number','Time'])['Flow'].sum().reset_index()
+    flow_data=df_WQ.groupby(['Rack_Number','Time'])['Flow'].mean().reset_index()
     # Water Level
-    water_level_data=df_WQ.groupby(['Rack_Number','Time'])['Level'].sum().reset_index()
+    water_level_data=df_WQ.groupby(['Rack_Number','Time'])['Level'].mean().reset_index()
     # Temperature
-    temperature_data=df_WQ.groupby(['Rack_Number','Time'])['Temperature'].sum().reset_index()
+    temperature_data=df_WQ.groupby(['Rack_Number','Time'])['Temperature'].mean().reset_index()
    
     return ph_data, conductivity_data, flow_data, water_level_data, temperature_data
-    
+
+def compute_data_monthly_WQ(df_WQ):
+    # Conductivity
+    conductivity_data=df_WQ.groupby(['Rack_Number','Month'])['Conductivity'].mean().reset_index()
+    # pH
+    ph_data=df_WQ.groupby(['Rack_Number','Month'])['pH'].mean().reset_index()
+    # Flow
+    flow_data=df_WQ.groupby(['Rack_Number','Month'])['Flow'].mean().reset_index()
+    # Water Level
+    water_level_data=df_WQ.groupby(['Rack_Number','Month'])['Level'].mean().reset_index()
+    # Temperature
+    temperature_data=df_WQ.groupby(['Rack_Number','Month'])['Temperature'].mean().reset_index()
+   
+    return ph_data, conductivity_data, flow_data, water_level_data, temperature_data
+
+def compute_data_yearly_WQ(df_WQ):
+    # Conductivity
+    conductivity_data=df_WQ.groupby(['Rack_Number','Year'])['Conductivity'].mean().reset_index()
+    # pH
+    ph_data=df_WQ.groupby(['Rack_Number','Year'])['pH'].mean().reset_index()
+    # Flow
+    flow_data=df_WQ.groupby(['Rack_Number','Year'])['Flow'].mean().reset_index()
+    # Water Level
+    water_level_data=df_WQ.groupby(['Rack_Number','Year'])['Level'].mean().reset_index()
+    # Temperature
+    temperature_data=df_WQ.groupby(['Rack_Number','Year'])['Temperature'].mean().reset_index()
+   
+    return ph_data, conductivity_data, flow_data, water_level_data, temperature_data
+
 
 """Compute graph data for creating equipment state analysis
 
@@ -77,19 +105,19 @@ Returns:
 def compute_data_daily_ES(df_ES):
     # pH pump
     pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Conductivity pump
     Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Heat Exchange Compression (Turning Heat Pump on/off)
     Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Cooling (switching heat pump to cooling)
     Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Heating (switching heat pump to heating)
     Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
 #This is the full layout of the app
     return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
 
@@ -232,23 +260,54 @@ def get_graph(chart, Rack, Time):
 
 
     if chart == 'tab-1-Water-Quality':
-        
-        # Compute data for creating graph
-        ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_daily_WQ(df_WQ)
+        if Time == 'Daily':
+          # Compute data for creating graph
+          ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_daily_WQ(df_WQ)
 
-        pH_fig = px.line(ph_data, x='Time', y='pH', color='Rack_Number', title='pH')
+          pH_fig = px.line(ph_data, x='Time', y='pH', color='Rack_Number', title='pH')
 
-        conductivity_fig = px.line(conductivity_data, x='Time', y='Conductivity', color='Rack_Number', title='Conductivity')
+          conductivity_fig = px.line(conductivity_data, x='Time', y='Conductivity', color='Rack_Number', title='Conductivity')
 
-        flow_fig =  px.line(flow_data, x='Time',y='Flow', color='Rack_Number',
-        title='Water Flow Rate')
+          flow_fig =  px.line(flow_data, x='Time',y='Flow', color='Rack_Number',
+          title='Water Flow Rate')
 
-        water_level_fig =  px.line(water_level_data, x='Time', y='Level', 
-        color='Rack_Number', title='Water Level')
+          water_level_fig =  px.line(water_level_data, x='Time', y='Level', 
+          color='Rack_Number', title='Water Level')
 
-        temperature_fig = px.line(temperature_data, x='Time', y='Temperature', 
-        color='Rack_Number', title='Temperautre')
+          temperature_fig = px.line(temperature_data, x='Time', y='Temperature', 
+          color='Rack_Number', title='Temperautre')
+        elif Time == 'Monthly':
+             # Compute data for creating graph
+          ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_monthly_WQ(df_WQ)
 
+          pH_fig = px.line(ph_data, x='Month', y='pH', color='Rack_Number', title='pH')
+
+          conductivity_fig = px.line(conductivity_data, x='Month', y='Conductivity', color='Rack_Number', title='Conductivity')
+
+          flow_fig =  px.line(flow_data, x='Month',y='Flow', color='Rack_Number',
+          title='Water Flow Rate')
+
+          water_level_fig =  px.line(water_level_data, x='Month', y='Level', 
+          color='Rack_Number', title='Water Level')
+
+          temperature_fig = px.line(temperature_data, x='Month', y='Temperature', 
+          color='Rack_Number', title='Temperautre')
+        else:
+             # Compute data for creating graph
+          ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_yearly_WQ(df_WQ)
+
+          pH_fig = px.line(ph_data, x='Year', y='pH', color='Rack_Number', title='pH')
+
+          conductivity_fig = px.line(conductivity_data, x='Year', y='Conductivity', color='Rack_Number', title='Conductivity')
+
+          flow_fig =  px.line(flow_data, x='Year',y='Flow', color='Rack_Number',
+          title='Water Flow Rate')
+
+          water_level_fig =  px.line(water_level_data, x='Year', y='Level', 
+          color='Rack_Number', title='Water Level')
+
+          temperature_fig = px.line(temperature_data, x='Year', y='Temperature', 
+          color='Rack_Number', title='Temperautre')
         return [
                 dcc.Graph(figure=pH_fig),
                 dcc.Graph(figure=conductivity_fig),
