@@ -1,0 +1,101 @@
+Row,Date,Time,Alarm
+0,12/05/20,15:33:37,Low Water Level CO
+1,12/17/20,11:07:51,Low Water Level CO
+2,12/18/20,13:56:48,Low Water Level CO
+3,12/19/20,10:24:16,High pH CO
+4,12/19/20,10:26:30,High pH CO
+5,01/16/21,12:37:07,Low Water Level
+6,01/16/21,12:37:36,System Manually Stopped
+7,01/28/21,16:13:11,Low Water Level CO
+8,01/31/21,09:38:05,Low Water Level CO
+9,02/04/21,10:13:29,Low Water Level CO
+10,02/06/21,12:53:44,Low Water Level CO
+11,02/08/21,12:07:57,Low Water Level CO
+12,02/18/21,12:42:40,Low Water Level CO
+13,02/20/21,12:42:52,Low Water Level CO
+14,02/24/21,16:26:44,Low Water Level
+15,02/27/21,09:42:38,Low Water Level CO
+16,03/04/21,10:53:49,Low Water Level CO
+17,03/04/21,12:49:27,Low Water Level CO
+18,03/10/21,10:46:45,Low Water Level CO
+19,03/10/21,13:13:03,Low Water Level CO
+20,03/11/21,10:12:36,Low Water Level CO
+21,03/11/21,15:29:37,Low Water Level CO
+22,03/13/21,09:39:20,Low Water Level CO
+23,03/15/21,10:15:44,Low Water Level CO
+24,03/17/21,12:50:10,Low Water Level CO
+25,03/19/21,12:43:12,Low Water Level CO
+26,03/23/21,15:05:48,Low Water Level CO
+27,03/26/21,12:42:40,Low Water Level CO
+28,03/27/21,08:33:50,High pH CO
+29,03/31/21,10:33:30,Low Water Level CO
+30,03/31/21,13:20:29,Low Water Level CO
+31,04/14/21,10:27:09,Low Water Level CO
+32,04/16/21,10:38:20,Low Water Level CO
+33,04/17/21,13:37:09,Low Water Level CO
+34,04/27/21,09:49:58,Low Water Level CO
+35,05/07/21,11:04:44,Low Water Level CO
+36,05/08/21,13:13:53,Low Water Level CO
+37,05/08/21,14:15:10,Low Conductivity
+38,05/13/21,16:01:16,Low Water Level CO
+39,05/26/21,09:36:44,Low Water Level CO
+40,05/28/21,16:07:05,Low Water Level CO
+41,06/02/21,09:24:45,Low Water Level CO
+42,06/12/21,09:38:21,Low Water Level CO
+43,07/10/21,13:10:44,Low Water Level CO
+44,07/14/21,15:10:15,Low Water Level CO
+45,07/15/21,09:45:52,Low Water Level CO
+46,07/17/21,09:51:09,Low Water Level CO
+47,07/19/21,10:11:22,Low Water Level CO
+48,07/19/21,10:13:51,Low Water Level
+49,07/22/21,09:30:45,Low Water Level CO
+50,11/11/19,10:29:32,Low Water Level
+51,11/14/19,15:22:36,Low Water Level
+52,11/19/19,13:23:45,Low Water Level CO
+53,11/20/19,14:28:05,Low Water Level
+54,11/28/19,12:20:29,Low Water Level
+55,12/19/19,15:01:42,Low Water Level
+56,12/20/19,15:13:54,Low Water Level CO
+57,12/21/19,16:39:48,Low Water Level
+58,12/27/19,13:09:40,Low Water Level CO
+59,01/07/20,15:44:37,Low Water Level CO
+60,01/13/20,15:19:48,Low Water Level CO
+61,01/14/20,13:05:32,Low Water Level CO
+62,01/21/20,16:18:01,Low pH
+63,02/06/20,15:56:36,Low Water Level CO
+64,02/13/20,09:50:17,Low Water Level
+65,02/25/20,13:24:36,System Manually Stopped
+66,03/07/20,12:58:57,Low Water Level CO
+67,03/11/20,14:50:03,Low Water Level CO
+68,03/18/20,15:12:10,Low Water Level
+69,03/22/20,11:10:29,Low Water Level CO
+70,03/29/20,14:37:08,Low Water Level CO
+71,03/31/20,13:05:07,Low Water Level CO
+72,04/14/20,14:45:00,Low Water Level CO
+73,04/17/20,12:26:22,Low Water Level CO
+74,05/11/20,12:35:46,Low Water Level CO
+75,05/12/20,13:35:19,Low Water Level CO
+76,05/16/20,09:52:39,Low Water Level CO
+77,06/01/20,11:14:10,Low Water Level CO
+78,06/11/20,13:03:49,Low Water Level CO
+79,06/12/20,14:21:29,Low Water Level CO
+80,06/13/20,15:24:58,Low Water Level CO
+81,06/18/20,15:38:02,Low Water Level CO
+82,07/03/20,12:42:09,Low Water Level CO
+83,07/10/20,14:52:28,Low Water Level CO
+84,07/13/20,14:07:20,System Manually Stopped
+85,08/03/20,12:17:45,Low Water Level CO
+86,08/28/20,16:22:02,Low Water Level CO
+87,09/05/20,11:11:21,Low Water Level CO
+88,09/17/20,12:44:11,Low Water Level CO
+89,10/08/20,16:32:57,Low Water Level CO
+90,10/16/20,16:13:59,Low Water Level CO
+91,10/16/20,16:17:40,Low Water Level CO
+92,10/17/20,15:50:42,Low Water Level
+93,10/29/20,14:19:45,Low Water Level CO
+94,10/30/20,10:48:14,Low Water Level CO
+95,10/31/20,16:16:58,Low Water Level CO
+96,11/08/20,11:33:36,Low Water Level CO
+97,11/19/20,10:53:17,Low Water Level
+98,11/19/20,14:49:44,Low Water Level CO
+99,11/27/20,10:49:18,Low Water Level CO
