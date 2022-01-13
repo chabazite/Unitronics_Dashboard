@@ -12,25 +12,11 @@ import dash_bootstrap_components as dbc
 #dashboard for continuous Water Quality and Equipment state data
 
 #initialize the app
-app=dash.Dash(external_stylesheets =[dbc.themes.SLATE])
+app=dash.Dash(external_stylesheets =[dbc.themes.SOLAR])
 
 #create sidebar stlying
-SIDEBAR_STYLE = {
-    "position" : "fixed",
-    "top" : 0,
-    "left" : 0,
-    "bottom" : 0,
-    "width" : "16rem",
-    "padding" : "2rem 1 rem",
-    "background-color": "#f8f9fa",
-}
 
 #Created Main content stlying
-CONTENT_STLYE = {
-    "margin-left" : "18rem",
-    "margin-right" : "2rem",
-    "padding" : "2rem 1rem",
-}
 
 #read in the data
 df_water_quality=pd.read_csv('..\data\Sensor_Input.csv')
@@ -198,50 +184,53 @@ sidebar = html.Div(
                 value='Daily'),
             html.Br(),
         ]),   
-    ],
-    style = SIDEBAR_STYLE,
-)
+    ])
 
 content = html.Div(
     [
-        html.Div([
+        dbc.Row([
             html.Div([], id='plot1'),
+        dbc.Row([    
             html.Div([], id='plot2')
             ]),
-        html.Div([
-            html.Div([],id='plot3'),
-            html.Div([],id='plot4'),
-            html.Div([],id='plot5')
-         ],style={'display':'flex'}),
-    ], style = CONTENT_STLYE,
-)
+        ]),
+        dbc.Row([
+            dbc.Col(html.Div([],id='plot3')),
+            dbc.Col(html.Div([],id='plot4')),
+            dbc.Col(html.Div([],id='plot5'))
+         ]),
+    ])
 
-app.layout = html.Div(children=[
-                 #Header Div
-                html.Div([
-                    # Top Left App Title DIV
-                    html.H1('Unitronics1 Dashboard',
+app.layout = html.Div([
+                #Header row that includes title and help button column              
+                dbc.Row([
+                    dbc.Col(html.H1('Unitronics Dashboard',
                                     style={'textAlign': 'left',
                                            'font-size': 20
                                             }),
-                    #Top Right Help Button DIV
-                    html.Button('Help', id='help',n_clicks=0),
+                    width={'size':10}),
+                    dbc.Col(dbc.Button('Help', color='info',className='me-1'),
+                    width={'size':2})
                 ]),
-                #Main Body DIV
-                html.Div([
-                    #Two Tabs from Water Quality to Equipment Analysis
+                #Tab Row that allows us to change from WQ to Equipment
+                dbc.Row([
+                    dbc.Col(
                     dcc.Tabs(id="tabs",value='tab-1-Water-Quality', children=[
                         dcc.Tab(label='Water Quality', 
                                 value='tab-1-Water-Quality'),
                         dcc.Tab(label='Equipment State',
                                 value='tab-2-Equipment-State'),
-                    ]),
+                    ])
+                    )
+                ]),
+                dbc.Row([
                     #Div surrounding both the graphs and sidebar filters
-                   html.Div([
-                        #Sidebar filters
-                        sidebar, content]),                 
+                   dbc.Col(sidebar,width={'size':3}),
+                   dbc.Col(content,width={'size':9}),
+                        #Sidebar filters                
                 ]),
 ])
+
 @app.callback([Output(component_id='plot1', component_property='children'),
                 Output(component_id='plot2', component_property='children'),
                 Output(component_id='plot3', component_property='children'),
