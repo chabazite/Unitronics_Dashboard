@@ -5,17 +5,36 @@ import plotly.express as px
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
 
 
 #Using the Dash framework created by plotly to make an interactive & real-time 
 #dashboard for continuous Water Quality and Equipment state data
 
 #initialize the app
-app=dash.Dash(__name__)
+app=dash.Dash(external_stylesheets =[dbc.themes.SLATE])
+
+#create sidebar stlying
+SIDEBAR_STYLE = {
+    "position" : "fixed",
+    "top" : 0,
+    "left" : 0,
+    "bottom" : 0,
+    "width" : "16rem",
+    "padding" : "2rem 1 rem",
+    "background-color": "#f8f9fa",
+}
+
+#Created Main content stlying
+CONTENT_STLYE = {
+    "margin-left" : "18rem",
+    "margin-right" : "2rem",
+    "padding" : "2rem 1rem",
+}
 
 #read in the data
-df_water_quality=pd.read_csv('..\data\CFRACK12_Sensor Input_01_12_21_23_57.csv')
-df_equip_state=pd.read_csv('..\data\CFRACK12_Device Log_01_12_21_23_57.csv')
+df_water_quality=pd.read_csv('..\data\Sensor_Input.csv')
+df_equip_state=pd.read_csv('..\data\Device_Log.csv')
 
 """Compute graph data for water quality reports
 
@@ -57,20 +76,77 @@ Returns:
 
 def compute_data_choice_2(df_ES):
     # pH pump
-    pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby(['Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Conductivity pump
-    Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby(['Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Heat Exchange Compression (Turning Heat Pump on/off)
-    Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby(['Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Cooling (switching heat pump to cooling)
-    Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby(['Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
     # Heating (switching heat pump to heating)
-    Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby(['Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
 #This is the full layout of the app
     return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
 
 
-app.layout = html.Div( style={'backgroundColor': '#111111','color':'white'}, children=[
+sidebar = html.Div(
+    [
+        html.H2("Choose your Weapons", className="display-4"),
+        html.Hr(),
+        html.Div([
+            html.Label('Rack Numbers'),
+            dbc.Checklist(
+                    id='RackNumber',
+                    options=[
+                        {'label': 'MUW', 'value':'MUW'},
+                        {'label': 'Rack 1', 'value':'Rack 1'},
+                        {'label': 'Rack 2', 'value':'Rack 2'},
+                        {'label': 'Rack 3', 'value':'Rack 3'},
+                        {'label': 'Rack 5', 'value':'Rack 5'},
+                        {'label': 'Rack 6', 'value':'Rack 6'},
+                        {'label': 'Rack 7', 'value':'Rack 7'},
+                        {'label': 'Rack 8', 'value':'Rack 8'},
+                        {'label': 'Rack 9', 'value':'Rack 9'},
+                        {'label': 'Rack 10', 'value':'Rack 10'},
+                        {'label': 'Rack 12', 'value':'Rack 12'}
+                    ], value=['MUW']
+                ),
+            html.Br(),
+            html.Label('TimeFrame'),
+            dbc.RadioItems(
+                id='TimeFrame',
+                options=[
+                    {'label': 'Daily', 'value':'DAY'},
+                    {'label': 'Monthly', 'value':'MNTH'},
+                    {'label': 'Yearly', 'value':'YR'},
+                        ],
+                value='DAY'),
+            html.Br(),
+        ]),   
+    ],
+    style = SIDEBAR_STYLE,
+)
+
+content = html.Div(
+    [
+        html.Div([
+            html.Div([], id='plot1'),
+            html.Div([], id='plot2')
+            ]),
+        html.Div([
+            html.Div([],id='plot3'),
+            html.Div([],id='plot4'),
+            html.Div([],id='plot5')
+         ],style={'display':'flex'}),
+    ], style = CONTENT_STLYE,
+)
+
+app.layout = html.Div(children=[
                  #Header Div
                 html.Div([
                     # Top Left App Title DIV
@@ -90,39 +166,12 @@ app.layout = html.Div( style={'backgroundColor': '#111111','color':'white'}, chi
                         dcc.Tab(label='Equipment State',
                                 value='tab-2-Equipment-State'),
                     ]),
-                    html.Div([
-                         html.Label('Rack Numbers'),
-                            dcc.Checklist(
-                                id='RackNumber',
-                                options=[
-                                    {'label': 'MUW', 'value':'MUW'},
-                                    {'label': 'Rack 1', 'value':'Rack 1'},
-                                    {'label': 'Rack 2', 'value':'Rack 2'},
-                                    {'label': 'Rack 3', 'value':'Rack 3'},
-                                    {'label': 'Rack 5', 'value':'Rack 5'},
-                                    {'label': 'Rack 6', 'value':'Rack 6'},
-                                    {'label': 'Rack 7', 'value':'Rack 7'},
-                                    {'label': 'Rack 8', 'value':'Rack 8'},
-                                    {'label': 'Rack 9', 'value':'Rack 9'},
-                                    {'label': 'Rack 10', 'value':'Rack 10'},
-                                    {'label': 'Rack 12', 'value':'Rack 12'}
-                                ], value=['MUW']
-                            ),
-                            html.Br(),
-                    ]),
-                    #Graph Section
-                    html.Div([
-                        html.Div([], id='plot1'),
-                        html.Div([], id='plot2')
-                        ]),
-                    html.Div([
-                        html.Div([],id='plot3'),
-                        html.Div([],id='plot4'),
-                        html.Div([],id='plot5')
-                    ],style={'display':'flex'}),
+                    #Div surrounding both the graphs and sidebar filters
+                   html.Div([
+                        #Sidebar filters
+                        sidebar, content]),                 
                 ]),
-            ])
-
+])
 @app.callback([Output(component_id='plot1', component_property='children'),
                 Output(component_id='plot2', component_property='children'),
                 Output(component_id='plot3', component_property='children'),
@@ -137,8 +186,8 @@ def get_graph(chart, Rack):
 
     df_WQ = df_water_quality[df_water_quality['Rack_Number'].isin(Rack)]
     df_ES = df_equip_state[df_equip_state['Rack_Number'].isin(Rack)]
-    print(df_WQ['Rack_Number'])
-    print(Rack)
+
+
     if chart == 'tab-1-Water-Quality':
         
         # Compute data for creating graph
@@ -169,19 +218,20 @@ def get_graph(chart, Rack):
         
         #Create Graph
         pH_pump_fig=px.bar(pH_pump_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "pH Pump State")
+            color='Rack_Number', title= "pH Pump State", barmode='group')
        
         conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Date_E', 
-            y='State_E', color='Rack_Number', title= "Conductivity Pump State")
+            y='State_E', color='Rack_Number', title= "Conductivity Pump State",
+             barmode='group')
 
         Heat_Comp_fig=px.bar(Heat_Compressor_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "Heat Compressor State")
+            color='Rack_Number', title= "Heat Compressor State", barmode='group')
 
         Water_Exchange_fig=px.bar(Water_exchange_data, x='Date_E', y='State_E',
-            color='Rack_Number', title= "Water Exchange State")
+            color='Rack_Number', title= "Water Exchange State", barmode='group')
 
         Cooling_fig=px.bar(Cooling_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "Cooling State")
+            color='Rack_Number', title= "Cooling State", barmode='group')
         return [dcc.Graph(figure=pH_pump_fig),
                 dcc.Graph(figure=conductivity_pump_fig),
                 dcc.Graph(figure=Heat_Comp_fig),
