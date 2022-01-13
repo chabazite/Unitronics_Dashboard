@@ -48,7 +48,7 @@ Returns:
    Dataframes to create graph. 
 """
 
-def compute_data_choice_1(df_WQ):
+def compute_data_daily_WQ(df_WQ):
     # Conductivity
     conductivity_data=df_WQ.groupby(['Rack_Number','Time'])['Conductivity'].sum().reset_index()
     # pH
@@ -74,29 +74,71 @@ Returns:
     dataframes for graphs.
 """
 
-def compute_data_choice_2(df_ES):
+def compute_data_daily_ES(df_ES):
     # pH pump
     pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
     # Conductivity pump
     Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
     # Heat Exchange Compression (Turning Heat Pump on/off)
     Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
     # Cooling (switching heat pump to cooling)
     Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
     # Heating (switching heat pump to heating)
     Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby([
-        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+        'Rack_Number','Date_E','Device_E'])['State_E'].avg().reset_index()
 #This is the full layout of the app
     return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
 
 
+
+def compute_data_monthly_ES(df_ES):
+    # pH pump
+    pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    # Conductivity pump
+    Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    # Heat Exchange Compression (Turning Heat Pump on/off)
+    Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    # Cooling (switching heat pump to cooling)
+    Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    # Heating (switching heat pump to heating)
+    Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+#This is the full layout of the app
+    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
+
+
+def compute_data_yearly_ES(df_ES):
+    # pH pump
+    pH_pump_data=df_ES[(df_ES['Device_E']=='pH Pump')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+    # Conductivity pump
+    Conductivity_pump_data=df_ES[(df_ES['Device_E']=='Conductivity Pump')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+    # Heat Exchange Compression (Turning Heat Pump on/off)
+    Heat_Compressor_data=df_ES[(df_ES['Device_E']=='Heat Ex Comp')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+    # Cooling (switching heat pump to cooling)
+    Water_exchange_data=df_ES[(df_ES['Device_E']=='Effulent Coil')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+    # Heating (switching heat pump to heating)
+    Cooling_data=df_ES[(df_ES['Device_E']=='Cooling')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+#This is the full layout of the app
+    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
+
+
+
 sidebar = html.Div(
     [
-        html.H2("Choose your Weapons", className="display-4"),
+        html.H2("Filters", className="display-4"),
         html.Hr(),
         html.Div([
             html.Label('Rack Numbers'),
@@ -121,11 +163,11 @@ sidebar = html.Div(
             dbc.RadioItems(
                 id='TimeFrame',
                 options=[
-                    {'label': 'Daily', 'value':'DAY'},
-                    {'label': 'Monthly', 'value':'MNTH'},
-                    {'label': 'Yearly', 'value':'YR'},
+                    {'label': 'Daily', 'value':'Daily'},
+                    {'label': 'Monthly', 'value':'Monthly'},
+                    {'label': 'Yearly', 'value':'Yearly'},
                         ],
-                value='DAY'),
+                value='Daily'),
             html.Br(),
         ]),   
     ],
@@ -179,10 +221,11 @@ app.layout = html.Div(children=[
                 Output(component_id='plot5', component_property='children')],
                 [Input(component_id='tabs', component_property='value'),
                  Input(component_id='RackNumber', component_property='value'),
+                 Input(component_id='TimeFrame', component_property='value')
                  ])
 
 
-def get_graph(chart, Rack):
+def get_graph(chart, Rack, Time):
 
     df_WQ = df_water_quality[df_water_quality['Rack_Number'].isin(Rack)]
     df_ES = df_equip_state[df_equip_state['Rack_Number'].isin(Rack)]
@@ -191,7 +234,7 @@ def get_graph(chart, Rack):
     if chart == 'tab-1-Water-Quality':
         
         # Compute data for creating graph
-        ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_choice_1(df_WQ)
+        ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_daily_WQ(df_WQ)
 
         pH_fig = px.line(ph_data, x='Time', y='pH', color='Rack_Number', title='pH')
 
@@ -214,24 +257,89 @@ def get_graph(chart, Rack):
                 dcc.Graph(figure=temperature_fig)
              ]
     else:
-        pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_choice_2(df_ES)
+        if Time =='Daily':
+            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_daily_ES(df_ES)
+
+            #Create Graph
+            pH_pump_fig=px.bar(pH_pump_data, x='Date_E', y='State_E', 
+                color='Rack_Number', title= "pH Pump State", barmode='group')
+
+            conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Date_E', 
+                y='State_E', color='Rack_Number', title= "Conductivity Pump State",
+                 barmode='group') 
+
+            Heat_Comp_fig=px.bar(Heat_Compressor_data, x='Date_E', y='State_E', 
+                color='Rack_Number', title= "Heat Compressor State", barmode='group')
+            Heat_Comp_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+
+            Water_Exchange_fig=px.bar(Water_exchange_data, x='Date_E', y='State_E',
+                color='Rack_Number', title= "Water Exchange State", barmode='group')
+
+            Cooling_fig=px.bar(Cooling_data, x='Date_E', y='State_E', 
+                color='Rack_Number', title= "Cooling State", barmode='group')
+
+        elif Time == 'Monthly':
+            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_monthly_ES(df_ES)
         
         #Create Graph
-        pH_pump_fig=px.bar(pH_pump_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "pH Pump State", barmode='group')
-       
-        conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Date_E', 
-            y='State_E', color='Rack_Number', title= "Conductivity Pump State",
-             barmode='group')
+            pH_pump_fig=px.bar(pH_pump_data, x='Month_E', y='State_E', 
+                color='Rack_Number', title= "pH Pump State", barmode='group')
+            pH_pump_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            pH_pump_fig.layout.xaxis.tickformat = '%b-%y'
 
-        Heat_Comp_fig=px.bar(Heat_Compressor_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "Heat Compressor State", barmode='group')
+            conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Month_E', 
+                y='State_E', color='Rack_Number', title= "Conductivity Pump State",
+                 barmode='group')
+            conductivity_pump_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            conductivity_pump_fig.layout.xaxis.tickformat = '%b-%y'     
 
-        Water_Exchange_fig=px.bar(Water_exchange_data, x='Date_E', y='State_E',
-            color='Rack_Number', title= "Water Exchange State", barmode='group')
+            Heat_Comp_fig=px.bar(Heat_Compressor_data, x='Month_E', y='State_E', 
+                color='Rack_Number', title= "Heat Compressor State", barmode='group')
+            Heat_Comp_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Heat_Comp_fig.layout.xaxis.tickformat = '%b-%y'
 
-        Cooling_fig=px.bar(Cooling_data, x='Date_E', y='State_E', 
-            color='Rack_Number', title= "Cooling State", barmode='group')
+
+            Water_Exchange_fig=px.bar(Water_exchange_data, x='Month_E', y='State_E',
+                color='Rack_Number', title= "Water Exchange State", barmode='group')
+            Water_Exchange_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Water_Exchange_fig.layout.xaxis.tickformat = '%b-%y'
+
+            Cooling_fig=px.bar(Cooling_data, x='Month_E', y='State_E', 
+                color='Rack_Number', title= "Cooling State", barmode='group')
+            Cooling_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Cooling_fig.layout.xaxis.tickformat = '%b-%y'
+        
+        else:
+            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_yearly_ES(df_ES)
+        
+        #Create Graph
+            pH_pump_fig=px.bar(pH_pump_data, x='Year_E', y='State_E', 
+                color='Rack_Number', title= "pH Pump State", barmode='group')
+            pH_pump_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            pH_pump_fig.layout.xaxis.tickformat = '%y'
+
+            conductivity_pump_fig=px.bar(Conductivity_pump_data, x='Year_E', 
+                y='State_E', color='Rack_Number', title= "Conductivity Pump State",
+                 barmode='group')
+            conductivity_pump_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            conductivity_pump_fig.layout.xaxis.tickformat = '%y'     
+
+            Heat_Comp_fig=px.bar(Heat_Compressor_data, x='Year_E', y='State_E', 
+                color='Rack_Number', title= "Heat Compressor State", barmode='group')
+            Heat_Comp_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Heat_Comp_fig.layout.xaxis.tickformat = '%y'
+
+
+            Water_Exchange_fig=px.bar(Water_exchange_data, x='Year_E', y='State_E',
+                color='Rack_Number', title= "Water Exchange State", barmode='group')
+            Water_Exchange_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Water_Exchange_fig.layout.xaxis.tickformat = '%y'
+
+            Cooling_fig=px.bar(Cooling_data, x='Year_E', y='State_E', 
+                color='Rack_Number', title= "Cooling State", barmode='group')
+            Cooling_fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+            Cooling_fig.layout.xaxis.tickformat = '%y'
+
         return [dcc.Graph(figure=pH_pump_fig),
                 dcc.Graph(figure=conductivity_pump_fig),
                 dcc.Graph(figure=Heat_Comp_fig),
