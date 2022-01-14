@@ -184,6 +184,7 @@ sidebar = html.Div([
 #Main page of the app (graphs) which uses bootstrap for oranization and components
 content = html.Div([
                 dbc.Row([
+                    dbc.Col(
                     dcc.Dropdown(id='chart-dropdown',
                         options=[
                             {'label': 'pH', 'value': 'pH'},
@@ -191,10 +192,14 @@ content = html.Div([
                             {'label': 'Water Level', 'value': 'Water Level'},
                             {'label': 'Flow Rate', 'value': 'Water Flow'},
                             {'label': 'Temperature', 'value': 'Temperature'},
-                        ], value='pH')
+                        ], value='pH'),
+                    width={'size':3})
                 ]),
                 dbc.Row([
-                    html.Div([], id='plot1'),
+                    dbc.Card(
+                        dbc.CardBody([
+                    html.Div([], id='plot1'),])
+                    )
                 ]),
             ])
 
@@ -460,7 +465,9 @@ def get_graph(chart, dropdown, Rack, Time):
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%y'
 
-    return [dcc.Graph(figure=fig)
+    return [dcc.Graph(figure=fig.update_layout(template ='plotly_dark',
+                                                plot_bgcolor = 'rgba(0,0,0,0)',
+                                                paper_bgcolor = 'rgba(0,0,0,0)'))
              ]
 
 if __name__ =='__main__':
