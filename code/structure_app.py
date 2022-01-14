@@ -22,6 +22,22 @@ app=dash.Dash(external_stylesheets=[dbc.themes.SOLAR])
 df_water_quality=pd.read_csv('..\data\Sensor_Input.csv')
 df_equip_state=pd.read_csv('..\data\Device_Log.csv')
 
+#create a list of graphs to change based on tab selection callbacks
+dropdown_levels=[{'label': 'pH', 'value': 'pH'},
+                    {'label': 'Conductivity', 'value': 'Conductivity'},
+                    {'label': 'Water Level', 'value': 'Water Level'},
+                    {'label': 'Flow Rate', 'value': 'Water Flow'},
+                    {'label': 'Temperature', 'value': 'Temperature'},
+                    {'label': 'pH Pump', 'value': 'pH Pump'},
+                    {'label': 'Conductivity Pump', 'value': 'Conductivity Pump'},
+                    {'label': 'Water Pump', 'value': 'Water Pump'},
+                    {'label': 'Water Exchange', 'value': 'Water Exchange'},
+                    {'label': 'HeatLine Water Pump', 'value': 'HeatLine Water Pump'},
+                    {'label': 'UV Coil', 'value': 'UV Coil'},
+                    {'label': 'Heat Exchange Compressor', 'value': 'Heat Exchange Compressor'},
+                    {'label': 'Heating', 'value': 'Heating'},
+                    {'label': 'Cooling', 'value': 'Cooling'}]
+
 """Compute graph data for water quality reports
 
 Function that takes water quality data as input and create 5 dataframes 
@@ -91,6 +107,15 @@ def compute_data_daily_ES(df_ES):
     # Conductivity pump
     Conductivity_pump_data=df_ES[(df_ES['Device_E'] == 'Conductivity Pump')].groupby([
         'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    # Water pump
+    Water_pump_data=df_ES[(df_ES['Device_E'] == 'Water Pump')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    #Heat Line Water Pump
+    Heat_pump_data=df_ES[(df_ES['Device_E'] == 'Heat Pump')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    # UV Coil (turning uv on and off)
+    UV_coil_data=df_ES[(df_ES['Device_E'] == 'UV Coil')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()    
     # Heat Exchange Compression (Turning Heat Pump on/off)
     Heat_Compressor_data=df_ES[(df_ES['Device_E'] == 'Heat Ex Comp')].groupby([
         'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
@@ -100,9 +125,10 @@ def compute_data_daily_ES(df_ES):
     # Cooling (switching heat pump to cooling)
     Cooling_data=df_ES[(df_ES['Device_E'] == 'Cooling')].groupby([
         'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    #Heating (switching from cooling to heating)
     Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
         'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
+    return pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 
@@ -111,6 +137,15 @@ def compute_data_monthly_ES(df_ES):
         'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
 
     Conductivity_pump_data=df_ES[(df_ES['Device_E'] == 'Conductivity Pump')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    
+    Water_pump_data=df_ES[(df_ES['Device_E'] == 'Water Pump')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+
+    Heat_pump_data=df_ES[(df_ES['Device_E'] == 'Heat Pump')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+
+    UV_coil_data=df_ES[(df_ES['Device_E'] == 'UV Coil')].groupby([
         'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
 
     Heat_Compressor_data=df_ES[(df_ES['Device_E'] == 'Heat Ex Comp')].groupby([
@@ -124,7 +159,7 @@ def compute_data_monthly_ES(df_ES):
 
     Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
         'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
+    return pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 def compute_data_yearly_ES(df_ES):
@@ -133,6 +168,15 @@ def compute_data_yearly_ES(df_ES):
         'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
 
     Conductivity_pump_data=df_ES[(df_ES['Device_E'] == 'Conductivity Pump')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+
+    Water_pump_data=df_ES[(df_ES['Device_E'] == 'Water Pump')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+
+    Heat_pump_data=df_ES[(df_ES['Device_E'] == 'Heat Pump')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+
+    UV_coil_data=df_ES[(df_ES['Device_E'] == 'UV Coil')].groupby([
         'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
 
     Heat_Compressor_data=df_ES[(df_ES['Device_E'] == 'Heat Ex Comp')].groupby([
@@ -147,11 +191,14 @@ def compute_data_yearly_ES(df_ES):
     Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
         'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
 
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
+    return pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 
 #Sidebar element which contains the filters. Used bootstrap for components (dbc)
+# Checklist component to select different Racks for data
+# RadioItem compoeent to determine if data is grouped daily, monthly, yearly
+# Date Range component to select the range of data to displace on the graph
 sidebar = html.Div([
                 html.H2("Filters", style={'textAlign': 'center',
                                            'font-size': 30}),
@@ -177,11 +224,11 @@ sidebar = html.Div([
                 html.Label('TimeFrame'),
                 dbc.RadioItems(
                     id='TimeFrame',
-                    options=[
-                        {'label': 'Daily', 'value':'Daily'},
-                        {'label': 'Monthly', 'value':'Monthly'},
-                        {'label': 'Yearly', 'value':'Yearly'},
-                            ],
+                    options =[
+                        {'label': "Daily", 'value': 'Daily'},
+                        {'label': "Monthly", 'value': 'Monthly'},
+                        {'label': "Yearly", 'value': 'Yearly'},
+                    ],
                     value='Daily'),
                 html.Br(),
                 ]),   
@@ -192,13 +239,8 @@ content = html.Div([
                 dbc.Row([
                     dbc.Col(
                     dcc.Dropdown(id='chart-dropdown',
-                        options=[
-                            {'label': 'pH', 'value': 'pH'},
-                            {'label': 'Conductivity', 'value': 'Conductivity'},
-                            {'label': 'Water Level', 'value': 'Water Level'},
-                            {'label': 'Flow Rate', 'value': 'Water Flow'},
-                            {'label': 'Temperature', 'value': 'Temperature'},
-                        ], value='pH'),
+                        options=dropdown_levels,
+                        value='pH'),
                     width={'size':3})
                 ]),
                 dbc.Row([
@@ -325,16 +367,16 @@ def get_graph(chart, dropdown, Rack, Time):
 
     else:
         if Time =='Daily':
-            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_daily_ES(df_ES)
+            pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data=compute_data_daily_ES(df_ES)
 
-            if dropdown == "pH":
+            if dropdown == "pH Pump":
                 fig=px.bar(pH_pump_data, x='Date_E', y='State_E', 
                     color='Rack_Number', title= "pH Pump State", barmode='group',
                                 labels={
                                     "Date_E": "Sampling Date",
                                     "State_E": "Equipment Uses"
                                 })
-            elif dropdown == "Conductivity":
+            elif dropdown == "Conductivity Pump":
                 fig=px.bar(Conductivity_pump_data, x='Date_E', 
                     y='State_E', color='Rack_Number', title= "Conductivity Pump State",
                      barmode='group',
@@ -342,7 +384,40 @@ def get_graph(chart, dropdown, Rack, Time):
                                     "Date_E": "Sampling Date",
                                     "State_E": "Equipment Uses"
                                 }) 
-            elif dropdown == "Water Level":
+            elif dropdown == "Water Pump":
+                fig=px.bar(Water_pump_data, x='Date_E', 
+                    y='State_E', color='Rack_Number', title= "Water Pump State",
+                     barmode='group',
+                                labels={
+                                    "Date_E": "Sampling Date",
+                                    "State_E": "Equipment Uses"
+                                })
+
+            elif dropdown == "Water Exchange":
+                fig=px.bar(Water_exchange_data, x='Date_E', y='State_E',
+                    color='Rack_Number', title= "Water Exchange State", barmode='group',
+                                labels={
+                                    "Date_E": "Sampling Date",
+                                    "State_E": "Equipment Uses"
+                                })
+
+            elif dropdown == "HeatLine Water Pump":
+                fig=px.bar(Heat_pump_data, x='Date_E', y='State_E',
+                    color='Rack_Number', title= "Heat Line Water Pump State", barmode='group',
+                                labels={
+                                    "Date_E": "Sampling Date",
+                                    "State_E": "Equipment Uses"
+                                })
+
+            elif dropdown == "UV Coil":
+                fig=px.bar(UV_coil_data, x='Date_E', y='State_E',
+                    color='Rack_Number', title= "UV Coil State", barmode='group',
+                                labels={
+                                    "Date_E": "Sampling Date",
+                                    "State_E": "Equipment Uses"
+                                })
+
+            elif dropdown == "Heat Exchange Compressor":
                 fig=px.bar(Heat_Compressor_data, x='Date_E', y='State_E', 
                     color='Rack_Number', title= "Heat Compressor State", barmode='group',
                                 labels={
@@ -350,14 +425,15 @@ def get_graph(chart, dropdown, Rack, Time):
                                     "State_E": "Equipment Uses"
                                 })
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
-            
-            elif dropdown == "Water Flow":
-                fig=px.bar(Water_exchange_data, x='Date_E', y='State_E',
-                    color='Rack_Number', title= "Water Exchange State", barmode='group',
+
+            elif dropdown == "Heating":
+                fig=px.bar(Heating_data, x='Date_E', y='State_E',
+                    color='Rack_Number', title= "Heating State", barmode='group',
                                 labels={
                                     "Date_E": "Sampling Date",
                                     "State_E": "Equipment Uses"
-                                })
+                                })           
+
             else:
                 fig=px.bar(Cooling_data, x='Date_E', y='State_E', 
                     color='Rack_Number', title= "Cooling State", barmode='group',
@@ -367,9 +443,9 @@ def get_graph(chart, dropdown, Rack, Time):
                                 })
 
         elif Time == 'Monthly':
-            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_monthly_ES(df_ES)
+            pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data=compute_data_monthly_ES(df_ES)
 
-            if dropdown == 'pH':       
+            if dropdown == 'pH Pump':       
                 fig=px.bar(pH_pump_data, x='Month_E', y='State_E', 
                     color='Rack_Number', title= "pH Pump State", barmode='group',
                                 labels={
@@ -378,7 +454,8 @@ def get_graph(chart, dropdown, Rack, Time):
                                 })
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%b-%y'
-            elif dropdown == "Conductivity":
+
+            elif dropdown == "Conductivity Pump":
                 fig=px.bar(Conductivity_pump_data, x='Month_E', 
                     y='State_E', color='Rack_Number', title= "Conductivity Pump State",
                      barmode='group',
@@ -389,7 +466,48 @@ def get_graph(chart, dropdown, Rack, Time):
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%b-%y'     
 
-            elif dropdown == "Water Flow":
+            elif dropdown == "Water Pump":
+                fig=px.bar(Water_pump_data, x='Month_E', 
+                    y='State_E', color='Rack_Number', title= "Water Pump State",
+                     barmode='group',
+                                labels={
+                                    "Month_E": "Sampling Month",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%b-%y'     
+
+            elif dropdown == "Water Exchange":
+                fig=px.bar(Water_exchange_data, x='Month_E', y='State_E',
+                    color='Rack_Number', title= "Water Exchange State", barmode='group',
+                                labels={
+                                    "Month_E": "Sampling Month",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%b-%y'
+
+            elif dropdown == "Heat Line Water Pump":
+                fig=px.bar(Heat_pump_data, x='Month_E', y='State_E',
+                    color='Rack_Number', title= "Heat Line Water Pump State", barmode='group',
+                                labels={
+                                    "Month_E": "Sampling Month",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%b-%y'
+
+            elif dropdown == "UV Coil":
+                fig=px.bar(UV_coil_data, x='Month_E', y='State_E',
+                    color='Rack_Number', title= "UV State", barmode='group',
+                                labels={
+                                    "Month_E": "Sampling Month",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%b-%y'
+
+            elif dropdown == "Heat Exchange Compressor":
                 fig=px.bar(Heat_Compressor_data, x='Month_E', y='State_E', 
                     color='Rack_Number', title= "Heat Compressor State", barmode='group',
                                 labels={
@@ -399,9 +517,9 @@ def get_graph(chart, dropdown, Rack, Time):
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%b-%y'
 
-            elif dropdown == "Water Level":
-                fig=px.bar(Water_exchange_data, x='Month_E', y='State_E',
-                    color='Rack_Number', title= "Water Exchange State", barmode='group',
+            elif dropdown == "Heating":
+                fig=px.bar(Heating_data, x='Month_E', y='State_E',
+                    color='Rack_Number', title= "Heating State", barmode='group',
                                 labels={
                                     "Month_E": "Sampling Month",
                                     "State_E": "Equipment Uses"
@@ -420,9 +538,9 @@ def get_graph(chart, dropdown, Rack, Time):
                 fig.layout.xaxis.tickformat = '%b-%y'
 
         else:
-            pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data=compute_data_yearly_ES(df_ES)
+            pH_pump_data, Conductivity_pump_data, Water_pump_data, Heat_pump_data, UV_coil_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data=compute_data_yearly_ES(df_ES)
         
-            if dropdown == 'pH':
+            if dropdown == 'pH Pump':
                 fig=px.bar(pH_pump_data, x='Year_E', y='State_E', 
                     color='Rack_Number', title= "pH Pump State", barmode='group',
                                 labels={
@@ -432,7 +550,7 @@ def get_graph(chart, dropdown, Rack, Time):
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%y'
             
-            elif dropdown == 'Conductivity':    
+            elif dropdown == 'Conductivity Pump':    
                 fig=px.bar(Conductivity_pump_data, x='Year_E', 
                     y='State_E', color='Rack_Number', title= "Conductivity Pump State",
                      barmode='group',
@@ -441,18 +559,40 @@ def get_graph(chart, dropdown, Rack, Time):
                                     "State_E": "Equipment Uses"
                                 })
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
-                fig.layout.xaxis.tickformat = '%y'     
-            elif dropdown == 'Water Flow':    
-                fig=px.bar(Heat_Compressor_data, x='Year_E', y='State_E', 
-                    color='Rack_Number', title= "Heat Compressor State", barmode='group',
+                fig.layout.xaxis.tickformat = '%y'    
+
+            elif dropdown == 'Heat Line Water Pump':    
+                fig=px.bar(Heat_pump_data, x='Year_E', y='State_E', 
+                    color='Rack_Number', title= "Heat Line Water Pump State", barmode='group',
                                 labels={
                                     "Year_E": "Sampling Year",
                                     "State_E": "Equipment Uses"
                                 })
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%y'
-                
-            elif dropdown == 'Water Level':    
+
+            elif dropdown == 'Water Pump':    
+                fig=px.bar(Water_pump_data, x='Year_E', y='State_E', 
+                    color='Rack_Number', title= "Water Pump State", barmode='group',
+                                labels={
+                                    "Year_E": "Sampling Year",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%y'
+
+
+            elif dropdown == 'UV Coil':    
+                fig=px.bar(UV_coil_data, x='Year_E', y='State_E', 
+                    color='Rack_Number', title= "UV Coil State", barmode='group',
+                                labels={
+                                    "Year_E": "Sampling Year",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%y'
+
+            elif dropdown == 'Water Exchange':    
                 fig=px.bar(Water_exchange_data, x='Year_E', y='State_E',
                     color='Rack_Number', title= "Water Exchange State", barmode='group',
                                 labels={
@@ -461,6 +601,29 @@ def get_graph(chart, dropdown, Rack, Time):
                                 })
                 fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
                 fig.layout.xaxis.tickformat = '%y'
+
+
+            elif dropdown == 'Heat Exchange Compressor':    
+                fig=px.bar(Heat_Compressor_data, x='Year_E', y='State_E', 
+                    color='Rack_Number', title= "Heat Compressor State", barmode='group',
+                                labels={
+                                    "Year_E": "Sampling Year",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%y'
+
+
+            elif dropdown == 'Heating':    
+                fig=px.bar(Heating_data, x='Year_E', y='State_E', 
+                    color='Rack_Number', title= "Heating State", barmode='group',
+                                labels={
+                                    "Year_E": "Sampling Year",
+                                    "State_E": "Equipment Uses"
+                                })
+                fig.layout.xaxis.tickvals = pd.date_range('2015-01', '2050-12', freq = 'MS')
+                fig.layout.xaxis.tickformat = '%y'
+                
 
             else:
                 fig=px.bar(Cooling_data, x='Year_E', y='State_E', 
