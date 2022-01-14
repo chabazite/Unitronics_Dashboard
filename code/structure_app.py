@@ -100,8 +100,9 @@ def compute_data_daily_ES(df_ES):
     # Cooling (switching heat pump to cooling)
     Cooling_data=df_ES[(df_ES['Device_E'] == 'Cooling')].groupby([
         'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
-
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
+    Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
+        'Rack_Number','Date_E','Device_E'])['State_E'].sum().reset_index()
+    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 
@@ -121,7 +122,9 @@ def compute_data_monthly_ES(df_ES):
     Cooling_data=df_ES[(df_ES['Device_E'] == 'Cooling')].groupby([
         'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
 
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
+    Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
+        'Rack_Number','Month_E','Device_E'])['State_E'].sum().reset_index()
+    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 def compute_data_yearly_ES(df_ES):
@@ -140,8 +143,11 @@ def compute_data_yearly_ES(df_ES):
 
     Cooling_data=df_ES[(df_ES['Device_E'] == 'Cooling')].groupby([
         'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
+        
+    Heating_data=df_ES[(df_ES['Device_E'] == 'Heating')].groupby([
+        'Rack_Number','Year_E','Device_E'])['State_E'].sum().reset_index()
 
-    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data
+    return pH_pump_data, Conductivity_pump_data, Heat_Compressor_data, Water_exchange_data, Cooling_data, Heating_data
 
 
 
@@ -196,10 +202,11 @@ content = html.Div([
                     width={'size':3})
                 ]),
                 dbc.Row([
-                    dbc.Card(
-                        dbc.CardBody([
-                    html.Div([], id='plot1'),])
-                    )
+                    dbc.Col(
+                         dbc.Card(
+                             dbc.CardBody([
+                         html.Div([], id='plot1'),])
+                         ), width = {'size':11}),
                 ]),
             ])
 
