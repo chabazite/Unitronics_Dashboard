@@ -19,8 +19,8 @@ app=dash.Dash(external_stylesheets=[dbc.themes.SOLAR])
 #Created Main content stlying
 
 #read in the data
-df_water_quality=pd.read_csv('..\data\Sensor_Input.csv')
-df_equip_state=pd.read_csv('..\data\Device_Log.csv')
+df_water_quality=pd.read_csv('data\Sensor_Input.csv')
+df_equip_state=pd.read_csv('data\Device_Log.csv')
 
 #create a list of graphs to change based on tab selection callbacks
 dropdown_levels=[{'label': 'pH', 'value': 'pH'},
@@ -297,6 +297,8 @@ def get_graph(chart, dropdown, Rack, Time):
 
 
     if chart == 'tab-1-Water-Quality':
+
+        
         if Time == 'Daily':
           
             ph_data, conductivity_data, flow_data, water_level_data, temperature_data = compute_data_daily_WQ(df_WQ)
