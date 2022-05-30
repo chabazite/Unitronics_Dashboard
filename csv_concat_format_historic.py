@@ -3,9 +3,15 @@ import os
 import re
 import psycopg2
 from sqlalchemy import create_engine
+import configuration.helper as helper
+config = helper.read_config()
+host = config['Database']['host']
+dbase = config['Database']['dbase']
+userName = config['Database']['userName']
+password = config['Database']['password']
 
 #engine
-conn_string = '***REMOVED***://***REMOVED***:***REMOVED***@***REMOVED***/***REMOVED***'
+conn_string = username,'://',username,':'password,'@',host,'/',dbase
 engine = create_engine(conn_string)
 db = create_engine(conn_string)
 conn = db.connect()
