@@ -17,7 +17,7 @@ db = create_engine(conn_string)
 conn = db.connect()
 
 
-#columns for ***REMOVED***
+#columns for postgres
 columns_alarm = ('rack_num', 'date_time', 'alarm')
 columns_sensor = ('rack_num', 'date_time', 'ph',
                   'conductivity', 'temperature', 'flow', 'level_')
@@ -39,7 +39,7 @@ def formatDataFrame(df):
     return df
 
 
-dir_name = "L:/***REMOVED***/Facility/Life Support Systems/PLC Data Logs/Individual Rack Data"
+dir_name = "L:/Cavefish/Facility/Life Support Systems/PLC Data Logs/Individual Rack Data"
 
 #dataframe creation
 alarm_df = pd.DataFrame(columns={'rack_num', 'Date_Time', 'Alarm'})
