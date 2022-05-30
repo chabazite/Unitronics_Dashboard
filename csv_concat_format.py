@@ -5,7 +5,7 @@ import psycopg2
 from sqlalchemy import create_engine
 
 #engine
-conn_string = '***REMOVED***ql://***REMOVED***:***REMOVED***@***REMOVED***/***REMOVED***'
+conn_string = '***REMOVED***://***REMOVED***:***REMOVED***@***REMOVED***/***REMOVED***'
 engine = create_engine(conn_string)
 db = create_engine(conn_string)
 conn = db.connect()
