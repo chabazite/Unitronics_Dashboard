@@ -5,7 +5,7 @@ pivot them to gain insights every month.
 
 ## Preliminary Work
 I first used Access Database with VBA and SQL to extract, transform, and load 
-the data. Then monthly I would query into a summary table. This save hours of 
+the data. Then monthly I would query into a summary table. This saves hours of 
 time for the technician monthly. However, it still was only able to help us
 look at issues after they had occured, I knew the water quality and 
 equipment state data could be used in real time to help prevent emergencies
