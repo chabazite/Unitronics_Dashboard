@@ -1,26 +1,3 @@
-# Unitronics Dashboard
-This is a project to help streamline data wrangling for my facility. Previously 
-there was a technician that was forced to combine hundreds of excel files and 
-pivot them to gain insights every month.
-
-## Preliminary Work
-I first used Access Database with VBA and SQL to extract, transform, and load 
-the data. Then monthly I would query into a summary table. This save hours of 
-time for the technician monthly. However, it still was only able to help us
-look at issues after they had occured, I knew the water quality and 
-equipment state data could be used in real time to help prevent emergencies
-from cropping up in the facility.
-
-## Current Program
-Using Dash framwork, python, and setting up an ETL pipeline with Azure, I am 
-attempting to create a up-to-date dashboard that can help up monitor our systems 
-in real time. We currently recieve csv files every day from the PLCs, which
-contain data by the minute. If this project proves successful, I will change the 
-download capabilities to decrease time between data writing so we can see real-
-time data as it is occuring.
-
-I would like us to be able to compare to past year, monthly data, and drill down
-to daily data. 
 
 Unitronics Dashboard
 ==============================
@@ -28,7 +5,45 @@ Unitronics Dashboard
 ## Business Case
 <a name="Business_Case"></a>
 
+When first starting at Stowers, there was one task in particular that I noticed 
+a severe time sink. Every month they would spend an entire day combining hundreds
+of csv files for the entire month for all 12 racks. Then create pivot tables
+to gain insights into the month. They would also invidividuall move each of these
+files from a local computer into their respective folders on the department drive.
 
+While this was helful in looking back at our previous month of equipment states, 
+there were some glaring issues I thought I could fix immediately. 
+
+1) The file names are structured the same, we can automate the moving process.
+2) We can automate the concat process through sql queries
+3) We can automate the pivot process and then have all historic data in a nice 
+graph to look back at every month to help with trends.
+
+Ultimately, this should cause the time to go from 8 hours a month to less than 
+10 minutes!
+
+### Preliminary Work
+I first used Access Database with VBA and SQL to extract, transform, and load 
+the data. Then monthly I would query into a summary table. This save hours of 
+time for the technician monthly. However, it still was only able to help us
+look at issues after they had occured.
+
+Additionally, we weren't even using the water quality or alarm data!I knew the 
+water quality and equipment state data could be used in real time to help prevent emergencies
+from cropping up in the facility.
+
+We currently recieve csv files every day from the PLCs, which
+contain data by the minute. If this project proves successful, I will change the 
+download capabilities to decrease time between data writing so we can see real-
+time data as it is occuring.
+
+### Current Work
+
+   1) Setup a postgreSQL database with three tables to house past and future data
+   2) Using python, transfer historic data from csv into database
+   3) Create a dashboard that provides easy-to-understand visuals
+   4) Create and maintain an ETL pipeline using Airflow to provide near real-time 
+   data for the dashboard.
 
 ## Table of Contents
 <details open>
@@ -105,7 +120,6 @@ Unitronics Dashboard
 <summary>Show/Hide</summary>
 <br>
 
-      
     ├──Airflow
     ├──Linux
     ├──PostgreSQL
@@ -126,24 +140,18 @@ Unitronics Dashboard
 <summary>Show/Hide</summary>
 <br>
 
- 1. Data Scraping	
-      * 1.1 Scraping DnDWiki using requests
+ 1.0 Historic Data Wrangling Attempt	
+      * 1.0.1 Scraping DnDWiki using requests
 
- 2. Business Understanding
-      * 2.1 Background on Challenge Rating
+ 1.1 Historic Alarm Data Wrangling
+      * 1.1.1 Background on Challenge Rating
 
- 3. Data Wrangling
-      * 3.1 Basic Cleanup
-      * 3.2 Turn Challenge Rating into usable integer
-      * 3.3 Create consolidated monster type column
+ 1.2 Historic Sensor Data Wrangling
+      * 1.2.1 Basic Cleanup
 
- 4. Exploratory Data Analysis
-      * 4.1 Insights into General Monster Stat blocks
+ 1.3 Historic Device Data Wrangling
+      * 1.3.1 Insights into General Monster Stat blocks
 
- 5. Modeling
-      * 5.1 Scikit-Learn MultiOutputRegressor
-
-      
 
  </details>
 
