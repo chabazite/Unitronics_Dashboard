@@ -71,14 +71,31 @@ time data as it is occuring.
     ├── .gitignore
     ├── README.md          <- The top-level README for developers using this project.
     ├──
+    ├── airflow-docker
+    │   ├── dags           <- 
+    │   ├── logs           <- 
+    │   ├── plugins        <- 
+    │   ├── .env
+    │   └── docker-compose.yaml 
+    │
+    ├── code
+    │   ├── csv_concat_format copy.py           <- 
+    │   ├── csv_concat_format_historic.py           <- 
+    │   ├── csv_concat_format.py                <- 
+    │   ├── DAG_functions.py
+    │   ├── dataframe.py           <- 
+    │   ├── ETL_Unitronics.py           <- 
+    │   ├── import_postgres.py                <- 
+    │   └── test_dag.py
+    │
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │  ├── external       <- Data from third party sources.
+    │  ├── interim        <- Intermediate data that has been transformed.
+    │  ├── processed      <- The final, canonical data sets for modeling.
+    │  └── raw            <- The original, immutable data dump.
     │
     ├── deployment         <- Folder that contains all deployment needs
-    │   ├── structure_app.py         <- first iteration dashboard
+    │  ├── structure_app.py         <- first iteration dashboard
     │
     ├── env                <- Virtual Environment for the project
     │
@@ -89,28 +106,13 @@ time data as it is occuring.
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    │  └── figures        <- Generated graphics and figures to be used in reporting
     │
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
     ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    └── src                <- Source code for use in this project.
-        ├── __init__.py    <- Makes src a Python module
-        │
-        ├── data           <- Scripts to download or generate data
-        |   ├── selenium_scrape.py
-        │   └── make_dataset.py
-        │
-        ├── features       <- Scripts to turn raw data into features for modeling
-        │   └── build_features.py
-        │
-        ├── models         <- Scripts to train models and then use trained models to make              
-        │   |                 predictions
-        │   └── test_model.py    
-        │
-        └── visualization  <- Scripts to create exploratory and results oriented visualizations
-
+    
 --------
   </details>   
 
@@ -130,6 +132,7 @@ time data as it is occuring.
         ├──OS
         ├──RegEx
         ├──DASH
+        ├──SQLAlchemy
  
  ------------
  </details>
@@ -141,16 +144,16 @@ time data as it is occuring.
 <br>
 
  1.0 Historic Data Wrangling Attempt	
-      * 1.0.1 Scraping DnDWiki using requests
+      * 1.0.1 
 
  1.1 Historic Alarm Data Wrangling
-      * 1.1.1 Background on Challenge Rating
+      * 1.1.1 
 
  1.2 Historic Sensor Data Wrangling
-      * 1.2.1 Basic Cleanup
+      * 1.2.1 
 
  1.3 Historic Device Data Wrangling
-      * 1.3.1 Insights into General Monster Stat blocks
+      * 1.3.1 
 
 
  </details>
