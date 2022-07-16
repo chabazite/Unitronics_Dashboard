@@ -5,7 +5,7 @@ import os
 from dataframe import concatDataFrame, createDataFrame
 from sqlalchemy.exc import IntegrityError
 
-def extractData():
+def extractData(dir_name):
     """
     function that parses through folder structure and uses the createDataFrame 
     function to read the individual csv files, then concatonates them into a 
@@ -14,7 +14,6 @@ def extractData():
     Returns:
         DataFrame: Three dataframes, one for each table in the database
     """
-    dir_name = "C:/Users/Public/Desktop/Unitronics"
 
     #dataframe creation
     device_df = pd.DataFrame(columns={'rack_num', 'Date_Time' 'Device', 'State'})
@@ -193,7 +192,16 @@ def transformData(device_df, sensor_df, alarm_df):
     return device_df, sensor_df, alarm_df
 
 def checkIntegrity(df,log_name,conn):
-  for i in range(len(df)):
+    """
+    runs through each line of the dataframe and checks if there is a primary key 
+    duplicate in the database. This prevents dup errors.
+
+    Args:
+        df (dataframe): the dataframe to be checked against the database
+        log_name (string): the name of the table in the database
+        conn (engine): SQLAlchemy engine
+    """
+    for i in range(len(df)):
         try:
           df.iloc[i:i+1].to_sql(log_name, con=conn,
                                 if_exists='append', index=False, chunksize=10000)
@@ -218,4 +226,13 @@ def loadData(device_df, sensor_df, alarm_df):
     checkIntegrity(sensor_df, 'sensor_log', conn)
     checkIntegrity(alarm_df, 'alarm_log', conn)
 
-    
+def deleteFiles(dir_name):
+    """
+    deletes files ingested into database
+
+    Args:
+        dir_name (string): directory path where files will be deleted
+    """
+    for root, dirs, files in os.walk(dir_name):
+        for filename in files:
+            os.remove(root+'/'+filename)
